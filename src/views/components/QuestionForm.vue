@@ -15,11 +15,20 @@
       🔮 咨询塔罗师
     </button>
 
+    <!-- 分类按钮 -->
     <div class="mt-6 flex space-x-4">
-      <button class="px-4 py-2 bg-[#C79C57] text-[#2B1A4C] rounded-full text-sm font-medium border border-[#D4AF37] hover:bg-[#D4AF37] transition">财富</button>
-      <button class="px-4 py-2 bg-[#C79C57] text-[#2B1A4C] rounded-full text-sm font-medium border border-[#D4AF37] hover:bg-[#D4AF37] transition">感情</button>
-      <button class="px-4 py-2 bg-[#C79C57] text-[#2B1A4C] rounded-full text-sm font-medium border border-[#D4AF37] hover:bg-[#D4AF37] transition">事业</button>
-      <button class="px-4 py-2 bg-[#C79C57] text-[#2B1A4C] rounded-full text-sm font-medium border border-[#D4AF37] hover:bg-[#D4AF37] transition">运势</button>
+      <button
+        v-for="key in categoryKeys"
+        :key="key"
+        @click="selectedCategory = key"
+        class="px-4 py-2 rounded-full text-sm font-medium border transition"
+        :class="{
+          'bg-[#D4AF37] text-[#2B1A4C] border-[#C79C57]': selectedCategory === key,
+          'bg-[#C79C57] text-[#2B1A4C] border-[#D4AF37] hover:bg-[#D4AF37]': selectedCategory !== key
+        }"
+      >
+        {{ categories[key] }}
+      </button>
     </div>
 
     <!-- 常见问题 -->
@@ -39,24 +48,59 @@
   </div>
 </template>
 
-
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+
 const emit = defineEmits(['submitQuestion'])
 
 const question = ref('')
+const selectedCategory = ref('wealth')
+
+const categories = {
+  wealth: '财富',
+  love: '感情',
+  career: '事业',
+  fortune: '运势'
+}
+
+const categoryQuestions = {
+  wealth: [
+    '最近经济状况是否会有好转？',
+    '我近期的财运如何？',
+    '投资能够实现盈利吗？',
+    '我的财运在什么时候最好呢？',
+    '近期会有获得意外之财的机会吗？'
+  ],
+  love: [
+    '我们近期会复合吗？',
+    '我最近的桃花运如何？会脱单吗？',
+    '我和TA结婚会幸福吗？',
+    'TA出轨了，TA是怎么想的呢？',
+    '我们能在一起吗？'
+  ],
+  career: [
+    '近期我会有升职加薪的机会吗？',
+    '我会遇到贵人吗？',
+    '我打算跳槽，会成功吗？',
+    '现阶段适合创业吗？',
+    '可以找到心仪的工作吗？'
+  ],
+  fortune: [
+    '我近三个月的整体运势如何？',
+    '短期内我的感情运势如何？会有变化吗？',
+    '未来３个月工作会稳定顺利吗？',
+    '最近的财运怎么样？',
+    '我和TA未来发展如何？'
+  ]
+}
+
+const categoryKeys = Object.keys(categories)
+
+const questions = computed(() => categoryQuestions[selectedCategory.value])
 
 const setQuestion = (text) => {
   question.value = text
 }
-
-const questions = [
-  '最近经济状况是否会有好转？',
-  '我近期的财运如何？',
-  '投资能够实现盈利吗？',
-  '我的财运在什么时候最好呢？',
-  '近期会有获得意外之财的机会吗？'
-]
 
 const submitQuestion = () => {
   emit('submitQuestion')
