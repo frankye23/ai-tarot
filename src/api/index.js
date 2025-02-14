@@ -1,8 +1,8 @@
-import { axios, aiAxios } from "../utils";
+import { axios } from "../utils";
 
 export function generateDialog(data) {
-  return aiAxios({
-    url: '/chat/completions',
+  return axios({
+    url: '/chat',
     method: 'post',
     data
   })
