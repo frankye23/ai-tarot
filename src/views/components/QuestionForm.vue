@@ -103,6 +103,7 @@ const setQuestion = (text) => {
 }
 
 const submitQuestion = () => {
-  emit('submitQuestion')
+  if (!question.value) return
+  emit('submitQuestion', question.value)
 }
 </script>
