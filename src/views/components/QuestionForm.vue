@@ -39,7 +39,7 @@
           v-for="(item, index) in questions"
           :key="index"
           @click="setQuestion(item)"
-          class="w-full bg-[#3D2C58] border border-[#C79C57] p-3 rounded-lg text-left text-[#EDE1D1] shadow-md hover:bg-[#4C376D] transition"
+          class="cursor-pointer w-full bg-[#3D2C58] border border-[#C79C57] p-3 rounded-lg text-left text-[#EDE1D1] shadow-md hover:bg-[#4C376D] transition"
         >
           {{ item }}
         </button>
