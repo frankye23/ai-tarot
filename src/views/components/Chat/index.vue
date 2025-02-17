@@ -19,11 +19,9 @@ const messages = ref([
   { text: props.question, isUser: true, avatar: userAvatar }
 ])
 
-onMounted(async () => {
+const getTarotAnswers = async () => {
   const selectedCardNames = props.selectedCards.map(card => card.name).join('、');
-  const promptMsg = `请你扮演塔罗占卜师，我使用的是圣三角牌阵，抽到的是${selectedCardNames}，想问的问题是：${props.question}`;
-
-  console.log(promptMsg);
+  const promptMsg = `请你扮演一位塔罗占卜师，使用圣三角牌阵为我占卜。我抽到了四张牌，抽到的是${selectedCardNames}，我想问的问题是：${props.question}，禁止在回答中出现任何英语单词，包括塔罗牌名。也就是牌名直接翻译好告诉我。直接回答问题，不需要解析牌阵结构。`;
 
   try {
     const data = {
@@ -36,5 +34,9 @@ onMounted(async () => {
   } catch (error) {
     messages.value.push({ text: '抱歉，解读失败，请稍后再试。', isUser: false, avatar: assistantAvatar })
   }
+}
+
+onMounted(async () => {
+  await getTarotAnswers()
 })
 </script>
