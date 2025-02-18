@@ -7,9 +7,10 @@
     </div>
 
     <div class="flex flex-wrap gap-4 mb-8 min-h-[200px]">
-      <Motion v-for="card in selectedCards" :key="card.name" class="w-[150px] h-[220px]">
+      <div v-for="card in selectedCards" :key="card.name" class="w-[150px] h-[220px]">
         <TarotCard :card="card" :isSelected="isSelected(card)" />
-      </Motion>
+        <div className="text-xl font-semibold text-center">{{card.name}}</div>
+      </div>
     </div>
 
     <!-- 牌堆 -->
@@ -39,17 +40,16 @@ const props = defineProps(['question']); // 接收用户提的问题
 const isSelected = (card) => selectedCards.value.includes(card);
 
 const TarotCard = ({ card, isSelected }) => (
-  <div className="bg-[#C79C57] rounded-lg shadow-lg p-4 w-[150px] h-[220px] relative">
-    <div className="text-center">
-      <div className="text-xl font-semibold text-[#2B1A4C] mb-2">{card.name}</div>
-      <div className="text-lg text-[#1F3C3D] mb-4">编号: {card.number}</div>
-      <div className="text-sm text-[#EDE1D1]">{card.arcana}</div>
-      {card.suit && <div className="text-sm text-[#D4AF37] mt-2">花色: {card.suit}</div>}
-    </div>
+  <div className="bg-[#C79C57] rounded-lg shadow-sm p-4 w-[150px] h-[220px] relative overflow-hidden">
+    <img
+      src={isSelected ? `/tarot/${card.img}` : "/tarot/back.png"}
+      alt={card.name}
+      className="absolute inset-0 w-full h-full object-cover rounded-lg"
+    />
 
     {!isSelected && (
-      <div className="absolute inset-0 bg-[#3D2C58] rounded-lg opacity-0 hover:opacity-100 transition duration-300">
-        <p className="text-[#EDE1D1] text-center p-4">点击抽牌</p>
+      <div className="absolute inset-0 bg-[#3D2C58] rounded-lg opacity-0 hover:opacity-100 transition duration-300 flex items-center justify-center">
+        <p className="text-[#EDE1D1] text-center">点击抽牌</p>
       </div>
     )}
   </div>

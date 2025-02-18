@@ -4,7 +4,7 @@ const baseURL = import.meta.env.VITE_BASE_API;
 
 const axios = Axios.create({
   baseURL,
-  timeout: 20000, // 超时时间 20s
+  timeout: 40000, // 超时时间 20s
   headers: {
     // jwt token
     // Authorization: `Bearer token`,
