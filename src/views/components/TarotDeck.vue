@@ -6,7 +6,7 @@
       <p class="text-sm text-[#EDE1D1] mt-2">已抽取 {{ selectedCards.length }}/4 张</p>
     </div>
 
-    <div class="flex flex-wrap gap-4 mb-8 min-h-[200px]">
+    <div class="flex flex-wrap gap-4 mb-24 min-h-[200px]">
       <div v-for="card in selectedCards" :key="card.name" class="w-[150px] h-[220px]">
         <TarotCard :card="card" :isSelected="isSelected(card)" />
         <div className="text-xl font-semibold text-center">{{card.name}}</div>
@@ -14,7 +14,7 @@
     </div>
 
     <!-- 牌堆 -->
-    <div v-if="selectedCards.length < 4" class="flex items-center relative mt-40">
+    <div v-if="selectedCards.length < 4" class="flex items-center relative mt-40 mb-24">
       <div v-for="(card, index) in tarotCards.cards" :key="index" 
         class="absolute right-56 transition-opacity duration-300"
         :class="{ 'opacity-0': isSelected(card) }"
