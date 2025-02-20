@@ -15,18 +15,19 @@
 
     <!-- 牌堆 -->
     <div v-if="selectedCards.length < 4" class="flex items-center relative mt-40 mb-24">
-      <div v-for="(card, index) in tarotCards.cards" :key="index"
+      <div v-for="(card, index) in tarotCards.cards" :key="index" 
         class="absolute right-56 transition-opacity duration-300" :class="{ 'opacity-0': isSelected(card) }"
-        :ref="el => cardRefs[index] = el" @click="drawCard(card)" :style="{ transform: `translateX(${index * 5}%)` }">
-        <TarotCard :card="card" :isSelected="isSelected(card)" />
+        :ref="el => cardRefs[index] = el" @click="drawCard(card)"  @mouseover="hoverCard(index, true)"
+        @mouseleave="hoverCard(index, false)" :style="{ transform: `translateX(${index * 5}%)` }">
+        <TarotCard :card="card" :isSelected="isSelected(card)" :isLoadingAnimation="isLoadingAnimation" :isHovered="hoveredIndex === index" />
       </div>
     </div>
 
     <!-- 对话组件 -->
     <Chat v-else :question="question" :selectedCards="selectedCards" />
-
-    <div class="p-4">
-      <button @click="shuffleCards"
+ 
+    <div class="p-4 mt-12" v-if="selectedCards.length === 0 && !isLoadingAnimation">
+      <button @click="shuffleCards" :disbaled="isLoadingAnimation"
         class="cursor-pointer bg-[#C79C57] hover:bg-[#D4AF37] text-[#3D2C58] font-semibold py-2 px-4 rounded-lg">
         洗牌
       </button>
@@ -43,18 +44,20 @@ import tarotCards from '@/assets/cards/tarot.json'
 
 const selectedCards = ref([]);
 const cardRefs = ref([]);
+const isLoadingAnimation = ref(false);
+const hoveredIndex = ref(null); 
 const props = defineProps(['question']); // 接收用户提的问题
 const isSelected = (card) => selectedCards.value.includes(card);
 
-const TarotCard = ({ card, isSelected }) => (
-  <div className="bg-[#C79C57] rounded-lg shadow-sm p-4 w-[150px] h-[220px] relative overflow-hidden">
+const TarotCard = ({ card, isSelected, isLoadingAnimation, isHovered  }) => (
+  <div className={`bg-white rounded-lg shadow-sm p-1 w-[150px] border h-[220px] relative overflow-hidden transition duration-300 ${isHovered ? 'transform translate-y-[-10px]' : ''}`}>
     <img
-      src={isSelected ? `/tarot/${card.img}` : "/tarot/back.png"}
+      src={isSelected ? `/tarot/${card.img}` : "/tarot/tarot_back.png"}
       alt={card.name}
       className="absolute inset-0 w-full h-full object-cover rounded-lg"
     />
 
-    {!isSelected && (
+    {!isSelected && !isLoadingAnimation && (
       <div className="absolute inset-0 bg-[#3D2C58] rounded-lg opacity-0 hover:opacity-100 transition duration-300 flex items-center justify-center">
         <p className="text-[#EDE1D1] text-center">点击抽牌</p>
       </div>
@@ -63,8 +66,11 @@ const TarotCard = ({ card, isSelected }) => (
 );
 
 const drawCard = (card) => {
-  if (selectedCards.value.length >= 4) return;
+  if (selectedCards.value.length >= 4 || isLoadingAnimation.value) return;
+  
   selectedCards.value.push(card);
+
+  tarotCards.value = tarotCards.value.filter(item => item.id !== card.id);
 };
 
 // TODO: 牌堆中卡牌的样式
@@ -81,6 +87,7 @@ const getCardStyle = (index, total) => {
 };
 
 const shuffleCards = () => {
+  isLoadingAnimation.value = true;
   // 模拟洗牌逻辑，打乱牌的顺序
   const shuffled = [...tarotCards.cards].sort(() => Math.random() - 0.5);
   tarotCards.cards = shuffled;
@@ -132,6 +139,7 @@ const shuffleCards = () => {
                 complete: () => {
                   // 5. 完成动画
                   console.log('洗牌动画完成');
+                  isLoadingAnimation.value = false;
                 }
               });
             }
@@ -140,6 +148,12 @@ const shuffleCards = () => {
       });
     }
   });
+
+  
+};
+
+const hoverCard = (index, isHovered) => {
+  hoveredIndex.value = isHovered ? index : null;
 };
 
 onMounted(() => {

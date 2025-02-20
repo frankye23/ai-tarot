@@ -5,7 +5,7 @@
       <NavMenu />
     </div>
     <div class="flex items-center gap-4">
-      <button class="cursor-pointer px-4 py-2 bg-purple-500 rounded-lg hover:bg-purple-400">登录</button>
+      <button class="cursor-pointer w-24 px-4 py-1 bg-purple-500 rounded-lg hover:bg-purple-400">登录</button>
     </div>
   </header>
 </template>

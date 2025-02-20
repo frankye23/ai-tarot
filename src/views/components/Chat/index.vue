@@ -2,7 +2,7 @@
   <div v-if="!isAnswered" class="text-center">
     <button 
       @click="getTarotAnswers" 
-      class="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg"
+      class="cursor-pointer bg-[#C79C57] hover:bg-[#D4AF37] text-[#3D2C58] font-semibold py-2 px-4 rounded-lg"
     >
       立即占卜
     </button>
