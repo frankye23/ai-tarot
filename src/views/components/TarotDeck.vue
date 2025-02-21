@@ -9,7 +9,7 @@
     <div class="flex flex-wrap gap-4 mb-24 min-h-[200px]">
       <div v-for="card in selectedCards" :key="card.name" class="w-[150px] h-[220px]">
         <TarotCard :card="card" :isSelected="isSelected(card)" />
-        <div className="text-xl font-semibold text-center">{{ card.name }}</div>
+        <div className="text-xl font-semibold text-center text-white mt-2">{{ card.name }}</div>
       </div>
     </div>
 

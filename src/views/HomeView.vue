@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex flex-col items-center p-6">
+  <div class="min-h-screen bg-gradient-to-b from-[#2B1A4C] to-[#1F3C3D] flex flex-col items-center p-6">
     <QuestionForm v-if="questionFormVisible" @submitQuestion="onSubmitQuestion" />
     <TarotDeck v-else :question="question" />
   </div>
