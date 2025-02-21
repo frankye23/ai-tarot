@@ -1,56 +1,108 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-[#2B1A4C] to-[#1F3C3D] flex flex-col items-center p-6 text-[#EDE1D1]">
-    <!-- 输入框 -->
-    <div class="w-full max-w-md">
-      <label class="block text-lg mb-2 font-medium text-[#D4AF37]">请描述你的问题</label>
-      <textarea
-        v-model="question"
-        class="w-full p-3 bg-[#3D2C58] border border-[#C79C57] rounded-lg text-[#EDE1D1] focus:outline-none focus:ring-2 focus:ring-[#D4AF37] shadow-md"
-        rows="2"
-        placeholder="请输入你的问题..."
-      ></textarea>
-    </div>
-
-    <button @click="submitQuestion" class="cursor-pointer mt-4 px-6 py-2 bg-[#8B0000] text-[#EDE1D1] font-semibold rounded-full shadow-lg border border-[#C79C57] hover:bg-[#9C2424] hover:shadow-2xl transition duration-300">
-      🔮 咨询塔罗师
-    </button>
+  <main class="py-12 px-4">
+    <section
+      class="max-w-6xl h-[500px] mx-auto text-center relative rounded-lg bg-cover bg-center bg-no-repeat bg-[url(../assets/test2.jpg)]">
+      <div class="relative z-10 flex items-center justify-center h-full p-4">
+        <div class="text-center">
+          <h2 class="text-4xl font-bold mb-4">Get a Reading</h2>
+          <p class="text-gray-500 mb-6 font-semibold">Whether you want to dive into the past, present, or future, our AI can help you
+            uncover insights.</p>
+          <div class="mx-auto relative flex items-center justify-start space-x-4 mb-8 w-2/3">
+            <input type="text" v-model="question" placeholder="What's your question?"
+              class="w-full p-3 bg-gray-300 rounded-lg focus:outline-none shadow-md pr-20 py-6 pl-4">
+            <button @click="submitQuestion"
+              class="absolute right-10 bg-[#5e17ce] hover:bg-purple-700 text-white px-6 py-2 rounded-lg cursor-pointer">
+              Start Reading
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- 分类按钮 -->
-    <div class="mt-6 flex space-x-4">
-      <button
-        v-for="key in categoryKeys"
-        :key="key"
-        @click="selectedCategory = key"
-        class="px-4 py-2 rounded-full text-sm font-medium border transition"
-        :class="{
-          'bg-[#D4AF37] text-[#2B1A4C] border-[#C79C57]': selectedCategory === key,
-          'bg-[#C79C57] text-[#2B1A4C] border-[#D4AF37] hover:bg-[#D4AF37]': selectedCategory !== key
-        }"
-      >
+    <div class="mt-12 flex justify-center space-x-4 max-w-6xl mx-auto">
+      <button v-for="key in categoryKeys" :key="key" @click="selectedCategory = key"
+        class="cursor-pointer px-4 py-2 rounded-full text-sm font-medium border transition-all duration-200" :class="{
+          'bg-[#5e17ce] hover:bg-purple-700 text-white shadow-md': selectedCategory === key,
+          'bg-white text-[#3D2C58] hover:bg-[#F5F5F5] hover:text-[#5e17ce]': selectedCategory !== key
+        }">
         {{ categories[key] }}
       </button>
     </div>
 
     <!-- 常见问题 -->
-    <div class="mt-6 w-full max-w-md">
-      <h2 class="text-lg mb-3 font-medium text-[#D4AF37]">大家都在问</h2>
+    <div class="mt-6 w-full max-w-6xl mx-auto">
+      <h2 class="text-lg mb-3 font-medium text-gray-400 pb-1">大家都在问</h2>
       <div class="space-y-3">
-        <button
-          v-for="(item, index) in questions"
-          :key="index"
-          @click="setQuestion(item)"
-          class="cursor-pointer w-full bg-[#3D2C58] border border-[#C79C57] p-3 rounded-lg text-left text-[#EDE1D1] shadow-md hover:bg-[#4C376D] transition"
-        >
+        <button v-for="(item, index) in questions" :key="index" @click="setQuestion(item)"
+          class="cursor-pointer w-full bg-white border border-gray-200 p-3 rounded-lg text-left text-[#3D2C58] shadow-md hover:bg-[#F5F5F5] hover:shadow-lg transition-all duration-200">
           {{ item }}
         </button>
       </div>
     </div>
+
+    <!-- How It Works Section -->
+    <section class="max-w-6xl mx-auto mt-12">
+      <h2 class="text-4xl font-bold mb-6 text-white">How it works</h2>
+      <p class="text-gray-400 mb-6 font-semibold">Our AI-powered card reader uses DeepSeek / Grok3 / GPT4  to provide in-depth insights on relationships,
+        career, finances, and more. Simply ask a question and let the cards guide you.</p>
+      <button class="bg-[#5e17ce] hover:bg-purple-700 text-white px-6 py-2 rounded-lg mb-8 cursor-pointer">Get a
+        Reading</button>
+
+      <!-- Reading Options -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-gray-800 p-4 rounded-lg">
+          <SvgIcon class="size-6 text-white" icon="ic:baseline-calendar-month" />
+
+          <h3 class="text-xl font-semibold my-2 text-white">Daily Read</h3>
+          <p class="text-gray-400">Get a free daily reading</p>
+        </div>
+        <div class="bg-gray-800 p-4 rounded-lg">
+          <SvgIcon class="size-6 text-white" icon="ic:round-access-alarms" />
+
+          <h3 class="text-xl font-semibold my-2 text-white">Instant Read</h3>
+          <p class="text-gray-400">Ask a question and receive an instant response</p>
+        </div>
+        <div class="bg-gray-800 p-4 rounded-lg">
+          <SvgIcon class="size-6 text-white" icon="ic:baseline-card-giftcard" />
+
+          <h3 class="text-xl font-semibold my-2 text-white">Gift a Read</h3>
+          <p class="text-gray-400">Surprise a loved one with a personalized tarot reading</p>
+        </div>
+      </div>
+
+      <!-- Tarot Card Images -->
+      <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <img src="../../assets/card_background1.jpg" alt="Tarot Cards"
+          class="rounded-lg object-cover w-full h-60 aspect-square">
+        <img src="../../assets/card_background2.jpg" alt="Tarot Cards"
+          class="rounded-lg object-cover w-full h-60 aspect-square">
+        <img src="../../assets/card_background3.jpg" alt="Tarot Cards"
+          class="rounded-lg object-cover w-full h-60 aspect-square">
+      </div>
+    </section>
+  </main>
+  <div class="">
+    <!-- 输入框 -->
+    <!-- <div class="w-full max-w-md">
+      <label class="block text-lg mb-2 font-medium text-[#D4AF37]">请描述你的问题</label>
+      <textarea v-model="question"
+        class="w-full p-3 bg-[#3D2C58] border border-[#C79C57] rounded-lg text-[#EDE1D1] focus:outline-none focus:ring-2 focus:ring-[#D4AF37] shadow-md"
+        rows="2" placeholder="请输入你的问题..."></textarea>
+    </div>
+
+    <button @click="submitQuestion"
+      class="cursor-pointer mt-4 px-6 py-2 bg-[#8B0000] text-[#EDE1D1] font-semibold rounded-full shadow-lg border border-[#C79C57] hover:bg-[#9C2424] hover:shadow-2xl transition duration-300">
+      🔮 咨询塔罗师
+    </button> -->
+
+
   </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
-
+import SvgIcon from '../../components/base/SvgIcon/index.vue'
 const emit = defineEmits(['submitQuestion'])
 
 const question = ref('')
