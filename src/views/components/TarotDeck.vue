@@ -6,6 +6,7 @@
       <p class="text-sm text-[#EDE1D1] mt-2">已抽取 {{ selectedCards.length }}/4 张</p>
     </div>
 
+    <!-- 已抽取卡牌的牌堆 -->
     <div class="flex flex-wrap gap-4 mb-24 min-h-[200px]">
       <div v-for="card in selectedCards" :key="card.name" class="w-[150px] h-[220px]">
         <TarotCard :card="card" :isSelected="isSelected(card)" />
@@ -15,7 +16,7 @@
 
     <!-- 牌堆 -->
     <div v-if="selectedCards.length < 4" class="flex items-center relative mt-40 mb-24">
-      <div v-for="(card, index) in tarotCards.cards" :key="index" 
+      <div v-for="(card, index) in tarotCards" :key="index" 
         class="absolute right-56 transition-opacity duration-300" :class="{ 'opacity-0': isSelected(card) }"
         :ref="el => cardRefs[index] = el" @click="drawCard(card)"  @mouseover="hoverCard(index, true)"
         @mouseleave="hoverCard(index, false)" :style="{ transform: `translateX(${index * 5}%)` }">
@@ -25,7 +26,7 @@
 
     <!-- 对话组件 -->
     <Chat v-else :question="question" :selectedCards="selectedCards" />
- 
+    
     <div class="p-4 mt-12" v-if="selectedCards.length === 0 && !isLoadingAnimation">
       <button @click="shuffleCards" :disbaled="isLoadingAnimation"
         class="cursor-pointer bg-[#C79C57] hover:bg-[#D4AF37] text-[#3D2C58] font-semibold py-2 px-4 rounded-lg">
@@ -40,8 +41,9 @@ import { ref, onMounted } from 'vue'
 import { Motion } from 'motion-v'
 import anime from 'animejs/lib/anime.es.js';
 import Chat from "./Chat/index.vue"
-import tarotCards from '@/assets/cards/tarot.json'
+import tarotCardsData from '@/assets/cards/tarot.json';
 
+const tarotCards = ref([...tarotCardsData.cards]);
 const selectedCards = ref([]);
 const cardRefs = ref([]);
 const isLoadingAnimation = ref(false);
@@ -67,10 +69,10 @@ const TarotCard = ({ card, isSelected, isLoadingAnimation, isHovered  }) => (
 
 const drawCard = (card) => {
   if (selectedCards.value.length >= 4 || isLoadingAnimation.value) return;
-  
+
   selectedCards.value.push(card);
 
-  tarotCards.value = tarotCards.value.filter(item => item.id !== card.id);
+  // tarotCards.value = tarotCards.value.filter(item => item.id !== card.id);
 };
 
 // TODO: 牌堆中卡牌的样式
@@ -89,9 +91,10 @@ const getCardStyle = (index, total) => {
 const shuffleCards = () => {
   isLoadingAnimation.value = true;
   // 模拟洗牌逻辑，打乱牌的顺序
-  const shuffled = [...tarotCards.cards].sort(() => Math.random() - 0.5);
-  tarotCards.cards = shuffled;
+  const shuffled = [...tarotCards.value].sort(() => Math.random() - 0.5);
+  tarotCards.value = shuffled;
   const cards = cardRefs.value.filter(Boolean);
+
   // 1. 牌堆初始状态：把铺开的牌合起来
   anime({
     targets: cards,
@@ -157,7 +160,6 @@ const hoverCard = (index, isHovered) => {
 };
 
 onMounted(() => {
-  // 确保 cardRefs 数组长度和卡牌数量一致
-  cardRefs.value = Array(tarotCards.cards.length).fill(null);
+  cardRefs.value = Array(tarotCards.value.length).fill(null);
 });
 </script>
