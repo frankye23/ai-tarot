@@ -26,13 +26,16 @@
 import { ref } from 'vue'
 import { generateDialog } from '@/api/index.js'
 import { useEventStream } from '../../../utils/useEventStream';
+import { useQuestionStore } from '@/store'
+
 import ChatMessage from './ChatMessage.vue'
 import userAvatar from '@/assets/error.svg'
 import assistantAvatar from '@/assets/check.svg'
 
-const props = defineProps(['question', 'selectedCards'])
+const props = defineProps(['selectedCards'])
 const MESSAGE_ID = 1
-const messages = ref([{ text: props.question, isUser: true, avatar: userAvatar }])
+const questionStore = useQuestionStore()
+const messages = ref([{ text: questionStore.getQuestion, isUser: true, avatar: userAvatar }])
 const isAnswered = ref(false)
 const { createEventStream } = useEventStream();
 
@@ -42,7 +45,7 @@ const getTarotAnswers = async () => {
 
   try {
     const selectedCardNames = props.selectedCards.map(card => card.name).join('、')
-    const promptMsg = `请你扮演一位塔罗占卜师，使用圣三角牌阵为我占卜。我抽到了四张牌，抽到的是${selectedCardNames}，我想问的问题是：${props.question}，禁止在回答中出现任何英语单词，包括塔罗牌名。也就是牌名直接翻译好告诉我。直接回答问题，不需要解析牌阵结构。`
+    const promptMsg = `请你扮演一位塔罗占卜师，使用圣三角牌阵为我占卜。我抽到了四张牌，抽到的是${selectedCardNames}，我想问的问题是：${questionStore.getQuestion}，禁止在回答中出现任何英语单词，包括塔罗牌名。也就是牌名直接翻译好告诉我。直接回答问题，不需要解析牌阵结构。`
 
     const loadingMessage = { text: '思考中...', isUser: false, avatar: assistantAvatar, loading: true }
     messages.value.push(loadingMessage)

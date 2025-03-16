@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Layout from '@/layout/index.vue'
 import HomeView from '@/views/HomeView.vue'
+import Reading from '@/views/reading/index.vue'
 
 const routes = [
   {
@@ -14,6 +15,14 @@ const routes = [
         component: HomeView,
         meta: {
           title: 'Home',
+        },
+      },
+      {
+        name: 'Reading',
+        path: '/reading',
+        component: Reading,
+        meta: {
+          title: 'Reading',
         },
       },
     ]

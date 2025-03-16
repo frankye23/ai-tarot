@@ -48,7 +48,7 @@ const selectedCards = ref([]);
 const cardRefs = ref([]);
 const isLoadingAnimation = ref(false);
 const hoveredIndex = ref(null); 
-const props = defineProps(['question']); // 接收用户提的问题
+// const props = defineProps(['question']); // 接收用户提的问题
 const isSelected = (card) => selectedCards.value.includes(card);
 
 const TarotCard = ({ card, isSelected, isLoadingAnimation, isHovered  }) => (
